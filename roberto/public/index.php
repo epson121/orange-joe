@@ -1,6 +1,5 @@
 <?php
 
-// framework/front.php
 require_once __DIR__.'/../vendor/autoload.php';
 require_once __DIR__.'/../src/app.php';
 
@@ -22,10 +21,8 @@ $matcher = new UrlMatcher($routes, $context);
 $response = new Response();
 
 try {
-    extract($matcher->match($request->getPathInfo()), EXTR_SKIP);
-    ob_start();
-    include sprintf(__DIR__.'/../src/%s.php', $_route);
-    $response->setContent(ob_get_clean());
+    $request->attributes->add($matcher->match($request->getPathInfo()));
+    $response = call_user_func($request->attributes->get('_controller'), $request);
 } catch(\Exception $e) {
     $response->setStatusCode(404);
     $response->setContent('Not Found');
