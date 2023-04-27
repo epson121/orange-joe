@@ -17,6 +17,7 @@ $map = [
 $path = $request->getPathInfo();
 if (isset($map[$path])) {
     ob_start();
+    extract($request->query->all(), EXTR_SKIP);
     require $map[$path];
     $response->setContent(ob_get_clean());
 } else {
