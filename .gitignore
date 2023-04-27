@@ -1,2 +1,4 @@
 .vscode
 roberto/vendor
+roberto/.phpunit.cache
+roberto/.phpunit.result.cache
