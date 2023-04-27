@@ -3,14 +3,14 @@
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 
-class IndexTest extends TestCase
+class LeapYearTest extends TestCase
 {
     /**
      * @runInSeparateProcess
      */
-    public function testHello()
+    public function testIsLeap()
     {
-        $request = Request::create('/hello/Orange');
+        $request = Request::create('/is_leap/2020');
 
         require '/var/www/html/public/index.php';
 
@@ -18,16 +18,16 @@ class IndexTest extends TestCase
         $this->assertNotNull($response);
 
         $content = $response->getContent();
-        $this->expectOutputRegex('/Hello Orange/', trim($content));
+        $this->expectOutputString('Yep, this is a leap year!', $content);
 
     }
 
     /**
      * @runInSeparateProcess
      */
-    public function testBye()
+    public function testIsNotLeap()
     {
-        $request = Request::create('/bye');
+        $request = Request::create('/is_leap/2021');
 
         require '/var/www/html/public/index.php';
 
@@ -35,7 +35,7 @@ class IndexTest extends TestCase
         $this->assertNotNull($response);
 
         $content = $response->getContent();
-        $this->expectOutputRegex('/Goodbye*/', trim($content));
+        $this->expectOutputString('Nope, this is not a leap year.', $content);
 
     }
 }
